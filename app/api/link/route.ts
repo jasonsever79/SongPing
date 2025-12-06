@@ -14,7 +14,7 @@ export async function GET(req: Request) {
 
     const url = new URL(req.url);
 
-    const pairingId = url.searchParams.get("id"); // ← use "id", not "code"
+    const pairingId = url.searchParams.get("id"); // use "id", NOT "code"
 
 
 
@@ -31,8 +31,6 @@ export async function GET(req: Request) {
     }
 
 
-
-    // Query by the *actual* unique field: id
 
     const pairing = await prisma.pairing.findUnique({
 
