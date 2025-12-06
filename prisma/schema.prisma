@@ -1,7 +1,3 @@
-// Your SongPing database structure
-
-
-
 generator client {
 
   provider = "prisma-client-js"
@@ -14,30 +10,36 @@ datasource db {
 
   provider = "sqlite"
 
-  url      = "file:./songping.db"
+  url      = "file:./dev.db"
 
 }
 
 
 
 model Pairing {
-model Message {
 
   id        Int      @id @default(autoincrement())
 
-  songTitle String
-
-  artist    String
-
-  url       String?
-
   createdAt DateTime @default(now())
+
+  messages  Message[]
 
 }
-  id        Int      @id @default(autoincrement())
 
-  code      String   @unique
 
-  createdAt DateTime @default(now())
+
+model Message {
+
+  id         Int      @id @default(autoincrement())
+
+  createdAt  DateTime @default(now())
+
+  pairingId  Int
+
+  pairing    Pairing  @relation(fields: [pairingId], references: [id])
+
+  role       String
+
+  content    String
 
 }
