@@ -59,7 +59,31 @@ export default function Home() {
           >
 
             Link with Partner
+<div style={{ marginTop: 20 }}>
 
+  <Link href="/generate">
+
+    <button
+
+      style={{
+
+        padding: "10px 20px",
+
+        fontSize: "16px",
+
+        cursor: "pointer"
+
+      }}
+
+    >
+
+      Generate Pair Code
+
+    </button>
+
+  </Link>
+
+</div>
           </button>
 
         </Link>
