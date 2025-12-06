@@ -1,26 +1,22 @@
+export const dynamic = "force-dynamic";
+
+
+
 import { NextResponse } from "next/server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
 
 
-const prisma = new PrismaClient();
-
-
-
-export async function GET(req: Request) {
+export async function GET(request: Request) {
 
   try {
 
-    // Extract "id" from query params
+    const { searchParams } = new URL(request.url);
 
-    const url = new URL(req.url);
-
-    const pairingId = url.searchParams.get("id");
+    const pairingId = searchParams.get("id");
 
 
-
-    // If no id provided
 
     if (!pairingId) {
 
@@ -36,7 +32,7 @@ export async function GET(req: Request) {
 
 
 
-    // Look up pairing by id
+    // Look up pairing by numeric ID
 
     const pairing = await prisma.pairing.findUnique({
 
@@ -52,8 +48,6 @@ export async function GET(req: Request) {
 
 
 
-    // If pairing not in database
-
     if (!pairing) {
 
       return NextResponse.json(
@@ -68,17 +62,15 @@ export async function GET(req: Request) {
 
 
 
-    // Success
-
     return NextResponse.json(pairing);
 
   } catch (error) {
 
-    console.error("Link route error:", error);
+    console.error("Error in /api/link:", error);
 
     return NextResponse.json(
 
-      { error: "Internal server error" },
+      { error: "Internal Server Error" },
 
       { status: 500 }
 
