@@ -1,57 +1,65 @@
-import { NextResponse } from "next/server";
+export async function POST(request: Request) {
 
-import { PrismaClient } from "@prisma/client";
+  try {
 
-
-
-// create a single database connection
-
-const prisma = new PrismaClient();
+    const { url } = await request.json();
 
 
 
-// function to generate a simple random 4-character code
+    if (!url) {
 
-function createCode() {
+      return new Response(
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        JSON.stringify({ error: "Missing YouTube URL" }),
 
-  let result = "";
+        { status: 400 }
 
-  for (let i = 0; i < 4; i++) {
-
-    result += letters[Math.floor(Math.random() * letters.length)];
-
-  }
-
-  return result;
-
-}
-
-
-
-export async function GET() {
-
-  const code = createCode();
-
-
-
-  // save the code to the database
-
-  await prisma.pairing.create({
-
-    data: {
-
-      code: code
+      );
 
     }
 
-  });
+
+
+    console.log("Generating metadata for:", url);
 
 
 
-  // return it to the app
+    // Temporary mock response
 
-  return NextResponse.json({ code });
+    return new Response(
+
+      JSON.stringify({
+
+        status: "ok",
+
+        title: "Sample Song Title",
+
+        thumbnail: "https://placehold.co/300x300?text=Thumbnail",
+
+        message: "Generation simulated"
+
+      }),
+
+      {
+
+        status: 200,
+
+        headers: { "Content-Type": "application/json" }
+
+      }
+
+    );
+
+  } catch (err) {
+
+    return new Response(
+
+      JSON.stringify({ error: "Invalid request" }),
+
+      { status: 400 }
+
+    );
+
+  }
 
 }
