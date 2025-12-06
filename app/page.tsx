@@ -85,7 +85,31 @@ export default function Home() {
 
 </div>
           </button>
+<div style={{ marginTop: 20 }}>
 
+  <Link href="/inbox">
+
+    <button
+
+      style={{
+
+        padding: "10px 20px",
+
+        fontSize: "16px",
+
+        cursor: "pointer"
+
+      }}
+
+    >
+
+      Inbox
+
+    </button>
+
+  </Link>
+
+</div>
         </Link>
 
       </div>
