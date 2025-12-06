@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+
+
+const prisma = new PrismaClient();
 
 
 
@@ -10,19 +14,13 @@ export async function GET(req: Request) {
 
     const { searchParams } = new URL(req.url);
 
-    const pairingId = searchParams.get("pairingId");
+    const pairingId = searchParams.get("code");
 
 
 
     if (!pairingId) {
 
-      return NextResponse.json(
-
-        { error: "Missing pairingId parameter" },
-
-        { status: 400 }
-
-      );
+      return NextResponse.json({ error: "Missing pairing code" }, { status: 400 });
 
     }
 
@@ -30,7 +28,7 @@ export async function GET(req: Request) {
 
     const pairing = await prisma.pairing.findUnique({
 
-      where: { pairingId: pairingId },
+      where: { code: pairingId },
 
     });
 
@@ -38,31 +36,17 @@ export async function GET(req: Request) {
 
     if (!pairing) {
 
-      return NextResponse.json(
-
-        { error: "Pairing not found" },
-
-        { status: 404 }
-
-      );
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     }
 
 
 
-    return NextResponse.json({ link: pairing.link });
+    return NextResponse.json(pairing);
 
-  } catch (error) {
+  } catch (err) {
 
-    console.error("Error in GET /api/link:", error);
-
-    return NextResponse.json(
-
-      { error: "Internal server error" },
-
-      { status: 500 }
-
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
 
   }
 
