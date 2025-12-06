@@ -21,7 +21,19 @@ datasource db {
 
 
 model Pairing {
+model Message {
 
+  id        Int      @id @default(autoincrement())
+
+  songTitle String
+
+  artist    String
+
+  url       String?
+
+  createdAt DateTime @default(now())
+
+}
   id        Int      @id @default(autoincrement())
 
   code      String   @unique
