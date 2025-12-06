@@ -1,32 +1,30 @@
-export default function LinkPage() {
+export default function LinkWithPartner() {
 
   return (
 
     <div style={{ padding: 30 }}>
 
-      <h1>Link with Partner</h1>
+      <h1>Link With Partner</h1>
 
-      <p>Enter the 4-digit code your partner gives you.</p>
+      <p>Enter the code your partner sent you:</p>
 
 
 
       <input
 
-        placeholder="1234"
+        type="text"
 
-        maxLength={4}
+        placeholder="Enter code"
 
         style={{
 
-          marginTop: 20,
-
           padding: "10px",
 
-          fontSize: "18px",
+          fontSize: "16px",
 
-          width: "100px",
+          width: "250px",
 
-          textAlign: "center"
+          marginTop: "10px"
 
         }}
 
@@ -44,15 +42,13 @@ export default function LinkPage() {
 
             fontSize: "16px",
 
-            cursor: "pointer"
+            cursor: "pointer",
 
           }}
 
-          onClick={() => alert("Code submission will be added soon!")}
-
         >
 
-          Link Devices
+          Link
 
         </button>
 
@@ -63,3 +59,5 @@ export default function LinkPage() {
   );
 
 }
+
+
