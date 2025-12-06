@@ -1,78 +1,52 @@
-import { NextResponse } from "next/server";
-
-import { PrismaClient } from "@prisma/client";
-
-
-
-const prisma = new PrismaClient();
-
-
-
-// Accepts either { link } or { songTitle, artist, url }
-
 export async function POST(request: Request) {
 
   try {
 
-    const body = await request.json();
-
-    const link = body.link ?? body.url ?? null;
-
-    const songTitle = body.songTitle ?? body.title ?? "";
-
-    const artist = body.artist ?? "";
+    const { email, songUrl } = await request.json();
 
 
 
-    const message = await prisma.message.create({
+    if (!email || !songUrl) {
 
-      data: {
+      return new Response(
 
-        songTitle,
+        JSON.stringify({ error: "Missing email or song URL" }),
 
-        artist,
+        { status: 400 }
 
-        url: link
+      );
+
+    }
+
+
+
+    console.log("Sending email:", { email, songUrl });
+
+
+
+    return new Response(
+
+      JSON.stringify({ message: "Email sent (simulated)" }),
+
+      {
+
+        status: 200,
+
+        headers: { "Content-Type": "application/json" }
 
       }
 
-    });
+    );
 
+  } catch (error) {
 
+    return new Response(
 
-    return NextResponse.json({ success: true, id: message.id });
+      JSON.stringify({ error: "Invalid request" }),
 
-  } catch (err) {
+      { status: 400 }
 
-    console.error("POST /api/send error:", err);
-
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
-
-  }
-
-}
-
-
-
-// Returns recent messages
-
-export async function GET() {
-
-  try {
-
-    const messages = await prisma.message.findMany({
-
-      orderBy: { createdAt: "desc" }
-
-    });
-
-    return NextResponse.json(messages);
-
-  } catch (err) {
-
-    console.error("GET /api/send error:", err);
-
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
+    );
 
   }
 
