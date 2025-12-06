@@ -1,3 +1,7 @@
+import Link from "next/link";
+
+
+
 export default function Home() {
 
   return (
@@ -8,7 +12,59 @@ export default function Home() {
 
       <p>Send music as a message.</p>
 
-      <p>Choose a song → Send → It plays on their phone.</p>
+
+
+      <div style={{ marginTop: 20 }}>
+
+        <button
+
+          style={{
+
+            padding: "10px 20px",
+
+            fontSize: "16px",
+
+            cursor: "pointer"
+
+          }}
+
+          onClick={() => alert("Send a Song will go here!")}
+
+        >
+
+          Send a Song
+
+        </button>
+
+      </div>
+
+
+
+      <div style={{ marginTop: 20 }}>
+
+        <Link href="/link">
+
+          <button
+
+            style={{
+
+              padding: "10px 20px",
+
+              fontSize: "16px",
+
+              cursor: "pointer"
+
+            }}
+
+          >
+
+            Link with Partner
+
+          </button>
+
+        </Link>
+
+      </div>
 
     </div>
 
