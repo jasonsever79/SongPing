@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { PrismaClient } from "@prisma/client";
-
-
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 
 
@@ -14,13 +10,13 @@ export async function GET(req: Request) {
 
     const { searchParams } = new URL(req.url);
 
-    const pairingId = searchParams.get("code");
+    const pairingId = searchParams.get("pairingId");
 
 
 
     if (!pairingId) {
 
-      return NextResponse.json({ error: "Missing pairing code" }, { status: 400 });
+      return NextResponse.json({ error: "Missing pairingId" }, { status: 400 });
 
     }
 
@@ -28,7 +24,9 @@ export async function GET(req: Request) {
 
     const pairing = await prisma.pairing.findUnique({
 
-      where: { code: pairingId },
+      where: { id: Number(pairingId) },
+
+      include: { messages: true },
 
     });
 
@@ -36,7 +34,7 @@ export async function GET(req: Request) {
 
     if (!pairing) {
 
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Pairing not found" }, { status: 404 });
 
     }
 
@@ -44,7 +42,9 @@ export async function GET(req: Request) {
 
     return NextResponse.json(pairing);
 
-  } catch (err) {
+  } catch (error) {
+
+    console.error(error);
 
     return NextResponse.json({ error: "Server error" }, { status: 500 });
 
