@@ -1,5 +1,7 @@
 "use client";
 
+
+
 import { useState } from "react";
 
 
@@ -10,11 +12,13 @@ export default function GenerateCodePage() {
 
 
 
-  function generateCode() {
+  async function generateCode() {
 
-    const newCode = Math.floor(1000 + Math.random() * 9000).toString();
+    const response = await fetch("/api/generate");
 
-    setCode(newCode);
+    const data = await response.json();
+
+    setCode(data.code);
 
   }
 
@@ -26,7 +30,7 @@ export default function GenerateCodePage() {
 
       <h1>Generate Pair Code</h1>
 
-      <p>Share this code with your partner so they can link to you.</p>
+      <p>Tap the button to create a code you can share with your partner.</p>
 
 
 
@@ -40,9 +44,7 @@ export default function GenerateCodePage() {
 
           fontSize: "16px",
 
-          cursor: "pointer",
-
-          marginTop: 20
+          cursor: "pointer"
 
         }}
 
@@ -56,23 +58,27 @@ export default function GenerateCodePage() {
 
       {code && (
 
-        <div
+        <div style={{ marginTop: 20 }}>
 
-          style={{
+          <h2>Your Code:</h2>
 
-            marginTop: 30,
+          <div
 
-            fontSize: "48px",
+            style={{
 
-            fontWeight: "bold",
+              fontSize: "32px",
 
-            letterSpacing: "10px"
+              fontWeight: "bold",
 
-          }}
+              letterSpacing: "4px"
 
-        >
+            }}
 
-          {code}
+          >
+
+            {code}
+
+          </div>
 
         </div>
 
