@@ -1,0 +1,31 @@
+// Your SongPing database structure
+
+
+
+generator client {
+
+  provider = "prisma-client-js"
+
+}
+
+
+
+datasource db {
+
+  provider = "sqlite"
+
+  url      = "file:./songping.db"
+
+}
+
+
+
+model Pairing {
+
+  id        Int      @id @default(autoincrement())
+
+  code      String   @unique
+
+  createdAt DateTime @default(now())
+
+}
