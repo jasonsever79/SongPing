@@ -1,89 +1,79 @@
-"use client";
+import { NextResponse } from "next/server";
 
-import { useState } from "react";
-
-
-
-export default function SendPage() {
-
-  const [songLink, setSongLink] = useState("");
+import { PrismaClient } from "@prisma/client";
 
 
 
-  function handleSend() {
+const prisma = new PrismaClient();
 
-    alert("Pretending to send: " + songLink);
+
+
+// Accepts either { link } or { songTitle, artist, url }
+
+export async function POST(request: Request) {
+
+  try {
+
+    const body = await request.json();
+
+    const link = body.link ?? body.url ?? null;
+
+    const songTitle = body.songTitle ?? body.title ?? "";
+
+    const artist = body.artist ?? "";
+
+
+
+    const message = await prisma.message.create({
+
+      data: {
+
+        songTitle,
+
+        artist,
+
+        url: link
+
+      }
+
+    });
+
+
+
+    return NextResponse.json({ success: true, id: message.id });
+
+  } catch (err) {
+
+    console.error("POST /api/send error:", err);
+
+    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
 
   }
 
-
-
-  return (
-
-    <div style={{ padding: 30 }}>
-
-      <h1>Send a Song</h1>
-
-      <p>Paste a link from Apple Music, Spotify, or YouTube.</p>
+}
 
 
 
-      <input
+// Returns recent messages
 
-        type="text"
+export async function GET() {
 
-        value={songLink}
+  try {
 
-        onChange={(e) => setSongLink(e.target.value)}
+    const messages = await prisma.message.findMany({
 
-        placeholder="Paste song link here..."
+      orderBy: { createdAt: "desc" }
 
-        style={{
+    });
 
-          width: "100%",
+    return NextResponse.json(messages);
 
-          padding: 10,
+  } catch (err) {
 
-          marginTop: 20,
+    console.error("GET /api/send error:", err);
 
-          marginBottom: 20
+    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
 
-        }}
-
-      />
-
-
-
-      <button
-
-        onClick={handleSend}
-
-        style={{ padding: 10, width: "100%" }}
-
-      >
-
-        Send Song
-
-      </button>
-
-
-
-      {/* Navigation */}
-
-      <div style={{ marginTop: 40 }}>
-
-        <a href="/" style={{ display: "block", marginBottom: 10 }}>Home</a>
-
-        <a href="/send" style={{ display: "block", marginBottom: 10 }}>Send Song</a>
-
-        <a href="/inbox" style={{ display: "block", marginBottom: 10 }}>Inbox</a>
-
-        <a href="/settings" style={{ display: "block", marginBottom: 10 }}>Settings</a>
-
-      </div>
-
-    </div>
-
-  );
+  }
 
 }
