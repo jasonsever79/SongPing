@@ -1,4 +1,48 @@
+"use client";
+
+
+
+import { useState } from "react";
+
+
+
 export default function LinkWithPartner() {
+
+  const [code, setCode] = useState("");
+
+  const [status, setStatus] = useState("");
+
+
+
+  async function submitCode() {
+
+    const response = await fetch("/api/link", {
+
+      method: "POST",
+
+      body: JSON.stringify({ code }),
+
+    });
+
+
+
+    const data = await response.json();
+
+
+
+    if (data.success) {
+
+      setStatus("✔ Linked successfully!");
+
+    } else {
+
+      setStatus("❌ Invalid code. Try again.");
+
+    }
+
+  }
+
+
 
   return (
 
@@ -15,6 +59,10 @@ export default function LinkWithPartner() {
         type="text"
 
         placeholder="Enter code"
+
+        value={code}
+
+        onChange={(e) => setCode(e.target.value)}
 
         style={{
 
@@ -36,6 +84,8 @@ export default function LinkWithPartner() {
 
         <button
 
+          onClick={submitCode}
+
           style={{
 
             padding: "10px 20px",
@@ -53,6 +103,18 @@ export default function LinkWithPartner() {
         </button>
 
       </div>
+
+
+
+      {status && (
+
+        <div style={{ marginTop: 20, fontSize: "18px" }}>
+
+          {status}
+
+        </div>
+
+      )}
 
     </div>
 
