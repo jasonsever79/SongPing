@@ -1,56 +1,18 @@
 "use client";
 
-
-
 import { useState } from "react";
 
 
 
-export default function SendSong() {
+export default function SendPage() {
 
-  const [title, setTitle] = useState("");
-
-  const [artist, setArtist] = useState("");
-
-  const [url, setUrl] = useState("");
-
-  const [status, setStatus] = useState("");
+  const [songLink, setSongLink] = useState("");
 
 
 
-  async function sendSong() {
+  function handleSend() {
 
-    const response = await fetch("/api/send", {
-
-      method: "POST",
-
-      body: JSON.stringify({
-
-        songTitle: title,
-
-        artist: artist,
-
-        url: url
-
-      })
-
-    });
-
-
-
-    const data = await response.json();
-
-
-
-    if (data.success) {
-
-      setStatus("🎵 Song sent!");
-
-    } else {
-
-      setStatus("Something went wrong.");
-
-    }
+    alert("Pretending to send: " + songLink);
 
   }
 
@@ -62,35 +24,7 @@ export default function SendSong() {
 
       <h1>Send a Song</h1>
 
-
-
-      <p>Enter song information:</p>
-
-
-
-      <input
-
-        type="text"
-
-        placeholder="Song Title"
-
-        value={title}
-
-        onChange={(e) => setTitle(e.target.value)}
-
-        style={{
-
-          padding: "10px",
-
-          fontSize: "16px",
-
-          width: "260px",
-
-          marginTop: "10px"
-
-        }}
-
-      />
+      <p>Paste a link from Apple Music, Spotify, or YouTube.</p>
 
 
 
@@ -98,21 +32,21 @@ export default function SendSong() {
 
         type="text"
 
-        placeholder="Artist"
+        value={songLink}
 
-        value={artist}
+        onChange={(e) => setSongLink(e.target.value)}
 
-        onChange={(e) => setArtist(e.target.value)}
+        placeholder="Paste song link here..."
 
         style={{
 
-          padding: "10px",
+          width: "100%",
 
-          fontSize: "16px",
+          padding: 10,
 
-          width: "260px",
+          marginTop: 20,
 
-          marginTop: "10px"
+          marginBottom: 20
 
         }}
 
@@ -120,81 +54,36 @@ export default function SendSong() {
 
 
 
-      <input
+      <button
 
-        type="text"
+        onClick={handleSend}
 
-        placeholder="Song URL (optional)"
+        style={{ padding: 10, width: "100%" }}
 
-        value={url}
+      >
 
-        onChange={(e) => setUrl(e.target.value)}
+        Send Song
 
-        style={{
-
-          padding: "10px",
-
-          fontSize: "16px",
-
-          width: "260px",
-
-          marginTop: "10px"
-
-        }}
-
-      />
+      </button>
 
 
 
-      <div style={{ marginTop: 20 }}>
+      {/* Navigation */}
 
-        <button
+      <div style={{ marginTop: 40 }}>
 
-          onClick={sendSong}
+        <a href="/" style={{ display: "block", marginBottom: 10 }}>Home</a>
 
-          style={{
+        <a href="/send" style={{ display: "block", marginBottom: 10 }}>Send Song</a>
 
-            padding: "10px 20px",
+        <a href="/inbox" style={{ display: "block", marginBottom: 10 }}>Inbox</a>
 
-            fontSize: "16px",
-
-            cursor: "pointer"
-
-          }}
-
-        >
-
-          Send Song
-
-        </button>
+        <a href="/settings" style={{ display: "block", marginBottom: 10 }}>Settings</a>
 
       </div>
-
-
-
-      {status && (
-
-        <div style={{ marginTop: 20, fontSize: "18px" }}>
-
-          {status}
-
-        </div>
-
-      )}
 
     </div>
 
   );
 
 }
-<div style={{ marginTop: 40 }}>
-
-  <a href="/" style={{ display: "block", marginBottom: 10 }}>Home</a>
-
-  <a href="/send" style={{ display: "block", marginBottom: 10 }}>Send Song</a>
-
-  <a href="/inbox" style={{ display: "block", marginBottom: 10 }}>Inbox</a>
-
-  <a href="/settings" style={{ display: "block", marginBottom: 10 }}>Settings</a>
-
-</div>
