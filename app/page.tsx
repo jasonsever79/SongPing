@@ -1,8 +1,32 @@
+"use client";
+
+
+
 import Link from "next/link";
 
 
 
 export default function Home() {
+
+
+
+  // Register the service worker when the component loads
+
+  if (typeof window !== "undefined") {
+
+    if ("serviceWorker" in navigator) {
+
+      navigator.serviceWorker.register("/service-worker.js")
+
+        .then(() => console.log("Service Worker Registered"))
+
+        .catch((err) => console.error("Service Worker Error:", err));
+
+    }
+
+  }
+
+
 
   return (
 
@@ -16,25 +40,7 @@ export default function Home() {
 
       <div style={{ marginTop: 20 }}>
 
-        <button
-
-          style={{
-
-            padding: "10px 20px",
-
-            fontSize: "16px",
-
-            cursor: "pointer"
-
-          }}
-
-          onClick={() => alert("Send a Song will go here!")}
-
-        >
-
-          Send a Song
-
-        </button>
+        <Link href="/send">Go to Send Page</Link>
 
       </div>
 
@@ -42,75 +48,7 @@ export default function Home() {
 
       <div style={{ marginTop: 20 }}>
 
-        <Link href="/link">
-
-          <button
-
-            style={{
-
-              padding: "10px 20px",
-
-              fontSize: "16px",
-
-              cursor: "pointer"
-
-            }}
-
-          >
-
-            Link with Partner
-<div style={{ marginTop: 20 }}>
-
-  <Link href="/generate">
-
-    <button
-
-      style={{
-
-        padding: "10px 20px",
-
-        fontSize: "16px",
-
-        cursor: "pointer"
-
-      }}
-
-    >
-
-      Generate Pair Code
-
-    </button>
-
-  </Link>
-
-</div>
-          </button>
-<div style={{ marginTop: 20 }}>
-
-  <Link href="/inbox">
-
-    <button
-
-      style={{
-
-        padding: "10px 20px",
-
-        fontSize: "16px",
-
-        cursor: "pointer"
-
-      }}
-
-    >
-
-      Inbox
-
-    </button>
-
-  </Link>
-
-</div>
-        </Link>
+        <Link href="/inbox">Go to Inbox</Link>
 
       </div>
 
