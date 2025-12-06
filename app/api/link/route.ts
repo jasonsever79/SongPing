@@ -12,17 +12,21 @@ export async function GET(req: Request) {
 
   try {
 
+    // Extract "id" from query params
+
     const url = new URL(req.url);
 
-    const pairingId = url.searchParams.get("id"); // use "id", NOT "code"
+    const pairingId = url.searchParams.get("id");
 
 
+
+    // If no id provided
 
     if (!pairingId) {
 
       return NextResponse.json(
 
-        { error: "Missing pairing id" },
+        { error: "Missing id parameter" },
 
         { status: 400 }
 
@@ -32,13 +36,23 @@ export async function GET(req: Request) {
 
 
 
+    // Look up pairing by id
+
     const pairing = await prisma.pairing.findUnique({
 
-      where: { id: pairingId },
+      where: { id: Number(pairingId) },
+
+      include: {
+
+        messages: true,
+
+      },
 
     });
 
 
+
+    // If pairing not in database
 
     if (!pairing) {
 
@@ -54,15 +68,17 @@ export async function GET(req: Request) {
 
 
 
+    // Success
+
     return NextResponse.json(pairing);
 
-  } catch (err) {
+  } catch (error) {
 
-    console.error(err);
+    console.error("Link route error:", error);
 
     return NextResponse.json(
 
-      { error: "Server error" },
+      { error: "Internal server error" },
 
       { status: 500 }
 
