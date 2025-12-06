@@ -2,11 +2,11 @@ export default function SendPage() {
 
   return (
 
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: 20 }}>
 
       <h1>Send a SongPing</h1>
 
-      <p>This page lets users send a SongPing. Backend will be added later.</p>
+      <p>This page will let you send a ping. Backend comes next.</p>
 
     </div>
 
