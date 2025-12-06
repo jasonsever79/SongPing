@@ -1,36 +1,52 @@
 import { NextResponse } from "next/server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
 
 
-const prisma = new PrismaClient();
+export async function GET(req: Request) {
+
+  try {
+
+    const { searchParams } = new URL(req.url);
+
+    const pairingId = searchParams.get("id");
 
 
 
-export async function POST(req: Request) {
+    if (!pairingId) {
 
-  const { code } = await req.json();
+      return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-
-
-  // Find the pairing entry in the database
-
-  const pairing = await prisma.pairing.findUnique({
-
-    where: { code }
-
-  });
+    }
 
 
 
-  if (pairing) {
+    const pairing = await prisma.pairing.findUnique({
 
-    return NextResponse.json({ success: true });
+      where: { id: pairingId },
 
-  } else {
+      include: { messages: true },
 
-    return NextResponse.json({ success: false });
+    });
+
+
+
+    if (!pairing) {
+
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    }
+
+
+
+    return NextResponse.json(pairing);
+
+  } catch (err) {
+
+    console.error(err);
+
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
 
   }
 
