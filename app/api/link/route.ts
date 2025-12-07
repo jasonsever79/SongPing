@@ -1,81 +1,27 @@
-export const dynamic = "force-dynamic";
-
-
-
+import prisma from "../../../lib/prisma";
 import { NextResponse } from "next/server";
 
-import prisma from "../../../lib/prisma";
-
-
-
-export async function GET(request: Request) {
-
+export async function POST(request) {
   try {
+    const { url } = await request.json();
 
-    const { searchParams } = new URL(request.url);
-
-    const pairingId = searchParams.get("id");
-
-
-
-    if (!pairingId) {
-
+    if (!url) {
       return NextResponse.json(
-
-        { error: "Missing id parameter" },
-
+        { error: "No URL provided" },
         { status: 400 }
-
       );
-
     }
 
-
-
-    // Look up pairing by numeric ID
-
-    const pairing = await prisma.pairing.findUnique({
-
-      where: { id: Number(pairingId) },
-
-      include: {
-
-        messages: true,
-
-      },
-
+    const saved = await prisma.link.create({
+      data: { url },
     });
 
-
-
-    if (!pairing) {
-
-      return NextResponse.json(
-
-        { error: "Pairing not found" },
-
-        { status: 404 }
-
-      );
-
-    }
-
-
-
-    return NextResponse.json(pairing);
-
+    return NextResponse.json(saved, { status: 200 });
   } catch (error) {
-
-    console.error("Error in /api/link:", error);
-
     return NextResponse.json(
-
-      { error: "Internal Server Error" },
-
+      { error: "Server error", details: error.message },
       { status: 500 }
-
     );
-
   }
-
 }
+
