@@ -1,45 +1,18 @@
+// ----------
+// Prisma Schema for SongPing
+// ----------
+
 generator client {
-
   provider = "prisma-client-js"
-
 }
-
-
 
 datasource db {
-
-  provider = "sqlite"
-
-  url      = "file:./dev.db"
-
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-
-
-model Pairing {
-
+model Link {
   id        Int      @id @default(autoincrement())
-
+  url       String
   createdAt DateTime @default(now())
-
-  messages  Message[]
-
-}
-
-
-
-model Message {
-
-  id         Int      @id @default(autoincrement())
-
-  createdAt  DateTime @default(now())
-
-  pairingId  Int
-
-  pairing    Pairing  @relation(fields: [pairingId], references: [id])
-
-  role       String
-
-  content    String
-
 }
